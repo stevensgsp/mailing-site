@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\EmailMessageController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +17,24 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::middleware('auth')->group(function () {
+    // index users
+    Route::get('/users', [UserController::class, 'index']);
+
+    // store users
+    Route::post('/users', [UserController::class, 'store']);
+
+    // show user
+    Route::get('/users/{id}', [UserController::class, 'show']);
+
+    // update user
+    Route::post('/users/{id}', [UserController::class, 'update']);
+
+    // delete user
+    Route::delete('/users/{id}', [UserController::class, 'destroy']);
+
+    // store email message
+    Route::post('/email-messages', [EmailMessageController::class, 'store']);
 });

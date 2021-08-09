@@ -14,7 +14,7 @@ class CreateEmailMessagesTable extends Migration
     public function up()
     {
         Schema::create('email_messages', function (Blueprint $table) {
-            $table->uuid();
+            $table->uuid('id')->primary();
             $table->string('to');
             $table->string('subject');
             $table->text('body');
