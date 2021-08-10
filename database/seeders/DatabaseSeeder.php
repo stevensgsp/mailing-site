@@ -2,6 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\City;
+use App\Models\Country;
+use App\Models\State;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,6 +17,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        // seed test countries, states and cities
+        Country::factory()->count(20)->create()->each(function ($country) {
+            State::factory()->count(10)->for($country)->create()->each(function ($state) {
+                City::factory()->count(5)->for($state)->create();
+            });
+        });
+
+        // seed admin user
+        User::factory()->for(City::get()->random())->create([
+            'name' => 'John Doe',
+            'email' => 'admin@mailing.site',
+        ]);
     }
 }

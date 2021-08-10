@@ -14,7 +14,7 @@ class City extends BaseModel
      */
     public function state()
     {
-        $this->belongsTo(\App\Models\State::class);
+        return $this->belongsTo(\App\Models\State::class);
     }
 
     /**
@@ -22,6 +22,6 @@ class City extends BaseModel
      */
     public function users()
     {
-        $this->hasMany(\App\Models\User::class);
+        return $this->hasMany(\App\Models\User::class);
     }
 }

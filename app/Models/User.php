@@ -38,7 +38,7 @@ class User extends Authenticatable
      */
     public function emailMessages()
     {
-        $this->hasMany(\App\Models\EmailMessage::class);
+        return $this->hasMany(\App\Models\EmailMessage::class);
     }
 
     /**
@@ -46,6 +46,6 @@ class User extends Authenticatable
      */
     public function city()
     {
-        $this->belongsTo(\App\Models\City::class);
+        return $this->belongsTo(\App\Models\City::class);
     }
 }

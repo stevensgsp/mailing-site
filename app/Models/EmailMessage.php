@@ -14,6 +14,6 @@ class EmailMessage extends BaseModel
      */
     public function user()
     {
-        $this->belongsTo(\App\Models\User::class);
+        return $this->belongsTo(\App\Models\User::class);
     }
 }

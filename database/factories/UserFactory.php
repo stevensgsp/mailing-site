@@ -28,6 +28,9 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random(10),
+            'phone_number' => random_int(1000000000, 9999999999),
+            'cedula' => random_int(1000000, 99999999999),
+            'birth_date' => now()->subYears(random_int(18, 100))->subMonths(random_int(1, 11))->subDays(random_int(1, 20))
         ];
     }
 

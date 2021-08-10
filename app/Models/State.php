@@ -14,6 +14,14 @@ class State extends BaseModel
      */
     public function country()
     {
-        $this->belongsTo(\App\Models\Country::class);
+        return $this->belongsTo(\App\Models\Country::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function cities()
+    {
+        return $this->hasMany(\App\Models\City::class);
     }
 }
