@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
         User::factory()->for(City::get()->random())->create([
             'name' => 'John Doe',
             'email' => 'admin@mailing.site',
+            'is_admin' => true,
         ]);
     }
 }

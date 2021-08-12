@@ -14,8 +14,7 @@ class StoreUserRequest extends FormRequest
      */
     public function authorize()
     {
-        # TODO: solo admins
-        return false;
+        return auth()->user()->isAdmin();
     }
 
     /**
@@ -32,10 +31,10 @@ class StoreUserRequest extends FormRequest
             # TODO: obliga: un número, una letra mayúscula, un carácter especial
             'password'          => ['required', 'filled', 'string', 'min:8', 'max:64', 'confirmed'],
 
-            'phone_number'      => ['present', 'integer', 'max:10'],
+            'phone_number'      => ['present', 'integer', 'max:9999999999'],
             'cedula'            => ['present', 'string', 'max:11'],
-            'birth_date'        => ['required', 'date', 'after_or_equal:' . Carbon::now()->subYears(18)->format('Y-m-d')],
-            'city_id'           => ['required', 'exists:' . \App\Models\City::class],
+            'birth_date'        => ['required', 'date', 'before_or_equal:' . Carbon::now()->subYears(18)->format('Y-m-d')],
+            'city_id'           => ['required', 'exists:' . \App\Models\City::class . ',id'],
         ];
     }
 }

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
+use App\Models\Country;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -19,7 +21,43 @@ class UserController extends Controller
         // get users
         $users = User::all();
 
-        return UserResource::collection($users);
+        return view('users.index', compact('users'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        // get countries
+        $countries = Country::all();
+
+        return view('users.create', compact('countries'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        // get user
+        $user = User::findOrFail($id);
+
+        // get countries
+        $countries = Country::all();
+
+        // get states
+        $states = $user->city->state->country->states;
+
+        // get cities
+        $cities = $user->city->state->cities;
+
+        return view('users.edit', compact('countries', 'states', 'cities', 'user'));
     }
 
     /**
@@ -36,7 +74,7 @@ class UserController extends Controller
         // create user
         $user = User::create($input);
 
-        return new UserResource($user);
+        return redirect()->route('users.index')->with('success', 'User stored!');
     }
 
     /**
@@ -71,7 +109,7 @@ class UserController extends Controller
         // update user
         $user->update($input);
 
-        return new UserResource($user);
+        return redirect()->route('users.index')->with('success', 'User updated!');
     }
 
     /**
@@ -88,27 +126,6 @@ class UserController extends Controller
         // (soft) delete user
         $user->delete();
 
-        return response('', 204);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  string  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        return redirect()->route('users.index')->with('success', 'User deleted!');
     }
 }

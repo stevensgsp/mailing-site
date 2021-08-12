@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CityController;
 use App\Http\Controllers\EmailMessageController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -15,32 +16,25 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+require __DIR__ . '/auth.php';
+
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
-
-require __DIR__ . '/auth.php';
-
 Route::middleware('auth')->group(function () {
-    // index users
-    Route::get('/users', [UserController::class, 'index']);
+    // dashboard
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
 
-    // store users
-    Route::post('/users', [UserController::class, 'store']);
+    // user routes
+    Route::resource('users', UserController::class)->middleware('is.admin');
 
-    // show user
-    Route::get('/users/{id}', [UserController::class, 'show']);
-
-    // update user
-    Route::post('/users/{id}', [UserController::class, 'update']);
-
-    // delete user
-    Route::delete('/users/{id}', [UserController::class, 'destroy']);
+    // country and state routes
+    Route::get('/states-by-country/{countryId?}', [CityController::class, 'statesByCountry'])->name('statesByCountry');
+    Route::get('/cities-by-state/{stateId?}', [CityController::class, 'citiesByState'])->name('citiesByState');
 
     // store email message
-    Route::post('/email-messages', [EmailMessageController::class, 'store']);
+    Route::post('/email-messages', [EmailMessageController::class, 'store'])->name('emailMessages.store');
 });

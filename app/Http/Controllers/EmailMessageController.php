@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreEmailMessageRequest;
 use App\Http\Resources\EmailMessageResource;
 use App\Models\EmailMessage;
@@ -56,27 +57,6 @@ class EmailMessageController extends Controller
         # TODO: verificar que usuario logueado es el que ha realizado el email
 
         return new EmailMessageResource($emailMessage);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**

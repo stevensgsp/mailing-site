@@ -27,6 +27,8 @@ class CreateUsersTable extends Migration
 
             $table->foreignUuid('city_id');
 
+            $table->boolean('is_admin')->default(false);
+
             $table->timestamps();
             $table->softDeletes();
         });

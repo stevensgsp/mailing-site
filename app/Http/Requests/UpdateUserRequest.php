@@ -14,8 +14,7 @@ class UpdateUserRequest extends FormRequest
      */
     public function authorize()
     {
-        # TODO: solo admins
-        return false;
+        return auth()->user()->isAdmin();
     }
 
     /**
@@ -27,10 +26,10 @@ class UpdateUserRequest extends FormRequest
     {
         return [
             'name'              => ['required', 'filled', 'string', 'max:100'],
-            'password'          => ['required', 'filled', 'string', 'min:8', 'max:64', 'confirmed'],
-            'phone_number'      => ['present', 'integer', 'max:10'],
-            'birth_date'        => ['required', 'date', 'after_or_equal:' . Carbon::now()->subYears(18)->format('Y-m-d')],
-            'city_id'           => ['required', 'exists:' . \App\Models\City::class],
+            'password'          => ['nullable', 'string', 'min:8', 'max:64', 'confirmed'],
+            'phone_number'      => ['present', 'integer', 'max:9999999999'],
+            'birth_date'        => ['required', 'date', 'before_or_equal:' . Carbon::now()->subYears(18)->format('Y-m-d')],
+            'city_id'           => ['required', 'exists:' . \App\Models\City::class . ',id'],
         ];
     }
 }

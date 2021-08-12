@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserResource extends JsonResource
@@ -15,12 +16,13 @@ class UserResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'id'           => $this->id,
             'name'         => $this->name,
             'email'        => $this->email,
             'phone_number' => $this->phone_number,
             'cedula'       => $this->cedula,
             'birth_date'   => $this->birth_date,
-            'age'          => $this->birth_date->age,
+            'age'          => Carbon::parse($this->birth_date)->age,
             'logs'         => $this->logs,
             'city'         => $this->city->name,
         ];
