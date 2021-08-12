@@ -3,6 +3,7 @@
 
 @php
 $extraClass = $errors->has($attributes->get('name')) ? 'border-red-500' : '';
+$extraClass .= $disabled ? ' text-gray-300' : '';
 @endphp
 
 <select

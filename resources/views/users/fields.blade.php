@@ -90,65 +90,59 @@
     />
 </div>
 
-@if (isset($countries))
-    <!-- country -->
-    <div class="mb-3">
-        <x-label for="country" :value="__('Country')" />
-        <x-select id="country" class="block mt-1 w-full" name="country" onchange="changeCountry(event.target.value)">
-            <x-slot name="options">
-                <option value="0">Select</option>
+<!-- country -->
+<div class="mb-3">
+    <x-label for="country" :value="__('Country')" />
+    <x-select id="country" class="block mt-1 w-full" name="country" onchange="changeCountry(event.target.value)" :disabled="@$disabled">
+        <x-slot name="options">
+            <option value="0">Select</option>
 
-                @foreach ($countries as $country)
-                    <option value="{{ $country->id }}"
-                        {{ old('country', $user->city->state->country->id ?? null) === $country->id ? 'selected' : '' }}
-                    >
-                        {{ $country->name }}
-                    </option>
-                @endforeach
-            </x-slot>
-        </x-select>
-    </div>
-@endif
+            @foreach ($countries as $country)
+                <option value="{{ $country->id }}"
+                    {{ old('country', $user->city->state->country->id ?? null) === $country->id ? 'selected' : '' }}
+                >
+                    {{ $country->name }}
+                </option>
+            @endforeach
+        </x-slot>
+    </x-select>
+</div>
 
-@if (isset($states))
-    <!-- state -->
-    <div class="mb-3">
-        <x-label for="state" :value="__('State')" />
-        <x-select id="state" class="block mt-1 w-full" name="state" onchange="changeState(event.target.value)">
-            <x-slot name="options">
-                <option value="0" selected disabled>Select</option>
+<!-- state -->
+<div class="mb-3">
+    <x-label for="state" :value="__('State')" />
+    <x-select id="state" class="block mt-1 w-full" name="state" onchange="changeState(event.target.value)" :disabled="@$disabled">
+        <x-slot name="options">
+            <option value="0" selected disabled>Select</option>
 
-                @foreach ($states ?? [] as $state)
-                    <option value="{{ $state->id }}"
-                        {{ old('state', $user->city->state->id ?? null) === $state->id ? 'selected' : '' }}
-                    >
-                        {{ $state->name }}
-                    </option>
-                @endforeach
-            </x-slot>
-        </x-select>
-    </div>
-@endif
+            @foreach ($states ?? [] as $state)
+                <option value="{{ $state->id }}"
+                    {{ old('state', $user->city->state->id ?? null) === $state->id ? 'selected' : '' }}
+                >
+                    {{ $state->name }}
+                </option>
+            @endforeach
+        </x-slot>
+    </x-select>
+</div>
 
-@if (isset($cities))
-    <!-- city_id -->
-    <div class="mb-3">
-        <x-label for="city_id" :value="__('City')" />
-        <x-select id="city_id" class="block mt-1 w-full" name="city_id">
-            <x-slot name="options">
-                <option value="0" selected disabled>Select</option>
+<!-- city_id -->
+<div class="mb-3">
+    <x-label for="city_id" :value="__('City')" />
+    <x-select id="city_id" class="block mt-1 w-full" name="city_id" :disabled="@$disabled">
+        <x-slot name="options">
+            <option value="0" selected disabled>Select</option>
 
-                @foreach ($cities ?? [] as $city)
-                    <option value="{{ $city->id }}"
-                        {{ old('city_id', $user->city->id ?? null) === $city->id ? 'selected' : '' }}
-                    >
-                        {{ $city->name }}
-                    </option>
-                @endforeach
-            </x-slot>
-        </x-select>
-    </div>
-@endif
+            @foreach ($cities ?? [] as $city)
+                <option value="{{ $city->id }}"
+                    {{ old('city_id', $user->city->id ?? null) === $city->id ? 'selected' : '' }}
+                >
+                    {{ $city->name }}
+                </option>
+            @endforeach
+        </x-slot>
+    </x-select>
+</div>
 
 <!-- back button -->
 @if (! @$disabled)
