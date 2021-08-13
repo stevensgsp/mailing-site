@@ -29,6 +29,16 @@ class EmailMessage extends BaseModel
     }
 
     /**
+     * Determies if the email message was queued.
+     *
+     * @return bool
+     */
+    public function wasQueued(): bool
+    {
+        return ! is_null($this->queued_at);
+    }
+
+    /**
      * Determies if the email message was created by the specified user.
      *
      * @param  \App\Models\User $user
@@ -46,6 +56,17 @@ class EmailMessage extends BaseModel
      */
     public function getStatusAttribute()
     {
-        return $this->wasSent() ? 'Enviado' : 'No enviado';
+        return $this->wasSent() ? 'Sent' : ($this->wasQueued() ? 'Queued' : 'Not sent');
+    }
+
+    /**
+     * Scope a query.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeNotSent($query)
+    {
+        return $query->whereNull('sent_at');
     }
 }

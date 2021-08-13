@@ -35,8 +35,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/cities-by-state/{stateId?}', [CityController::class, 'citiesByState'])->name('citiesByState');
 
     // store email message
-    Route::get('/email-messages/index', [EmailMessageController::class, 'index'])->name('emailMessages.index');
+    Route::get('/email-messages', [EmailMessageController::class, 'index'])->name('emailMessages.index');
+    Route::post('/email-messages', [EmailMessageController::class, 'store'])->name('emailMessages.store');
     Route::get('/email-messages/create', [EmailMessageController::class, 'create'])->name('emailMessages.create');
     Route::get('/email-messages/{id}', [EmailMessageController::class, 'show'])->name('emailMessages.show');
-    Route::post('/email-messages', [EmailMessageController::class, 'store'])->name('emailMessages.store');
+    Route::put('/email-messages/queue-email-messages', [EmailMessageController::class, 'queueEmailMessages'])->name('emailMessages.queueEmailMessages');
 });

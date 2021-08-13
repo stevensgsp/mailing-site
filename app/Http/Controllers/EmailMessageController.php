@@ -7,6 +7,7 @@ use App\Http\Requests\StoreEmailMessageRequest;
 use App\Http\Resources\EmailMessageResource;
 use App\Models\EmailMessage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 
 class EmailMessageController extends Controller
 {
@@ -48,7 +49,7 @@ class EmailMessageController extends Controller
         $user = auth()->user();
 
         // create email message
-        $emailMessage = $user->emailMessages()->create($input);
+        $user->emailMessages()->create($input);
 
         return redirect()->route('emailMessages.index')->with('success', 'Email stored!');
     }
@@ -68,5 +69,30 @@ class EmailMessageController extends Controller
         abort_if(! $emailMessage->wasCreatedBy(auth()->user()), 401);
 
         return view('emailMessages.show', compact('emailMessage'));
+    }
+
+    /**
+     * Send the email messages that has not been sent yet.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function queueEmailMessages()
+    {
+        // get user
+        $user = auth()->user();
+
+        // get email messages
+        $emailMessages = $user->emailMessages()->notSent()->get();
+
+        if ($emailMessages->isEmpty()) {
+            return redirect()->route('emailMessages.index')->with('success', 'No email messages to queue.')->with('type', 'yellow');
+        }
+
+        // call artisan command to queue the email messages
+        Artisan::call('queue:mails', [
+            '--user' => $user->id
+        ]);
+
+        return redirect()->route('emailMessages.index')->with('success', 'Email messages queued!');
     }
 }

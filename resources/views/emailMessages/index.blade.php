@@ -9,12 +9,13 @@
                         <thead>
                             <tr>
                                 <th colspan="5" scope="col items-end" style="text-align: end;">
-                                    <!-- send pending mails button -->
-                                    <a href="{{ route('emailMessages.create') }}">
-                                        <x-button class="ml-3 bg-blue-500">
-                                            {{ __('Send pending mails') }}
-                                        </x-button>
-                                    </a>
+                                    <!-- queue pending mails button -->
+                                    <form method="post" action="{{ route('emailMessages.queueEmailMessages') }}" id="queue-email-messages">
+                                        @csrf @method('put')
+                                    </form>
+                                    <x-button class="ml-3 bg-blue-500" type='button' onclick="clickQueue(event)">
+                                        {{ __('Queue email messages') }}
+                                    </x-button>
 
                                     <!-- create button -->
                                     <a href="{{ route('emailMessages.create') }}">
@@ -38,10 +39,18 @@
                                     </td>
                                     <td>
                                         <span
+                                            title="{{ $emailMessage->wasSent() ? $emailMessage->sent_at : '' }}"
                                             class="inline-block rounded-full
                                             text-white px-2 py-1
                                             text-xs font-bold mr-3
-                                            {{ $emailMessage->wasSent() ? 'bg-green-500' : 'bg-yellow-500' }}"
+                                            {{ $emailMessage->wasSent()
+                                                ? 'bg-green-500'
+                                                : (
+                                                    $emailMessage->wasQueued()
+                                                        ? 'bg-yellow-500'
+                                                        : 'bg-red-500'
+                                                )
+                                            }}"
                                         >{{ $emailMessage->status }}</span>
                                     </td>
                                     <td>
@@ -87,12 +96,10 @@
 </x-app-layout>
 
 <script>
-    const clickDestroy = (event, formId) => {
-        let target = event.target;
-
-        let response = confirm("Are you sure you want to delete the email message?");
+    const clickQueue = (event) => {
+        let response = confirm("Are you sure you want to queue all the pending email messages?");
         if (response == true) {
-          let form = document.getElementById(formId);
+          let form = document.getElementById('queue-email-messages');
 
           form.submit();
         }

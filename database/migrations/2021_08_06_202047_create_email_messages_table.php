@@ -18,8 +18,9 @@ class CreateEmailMessagesTable extends Migration
             $table->string('to');
             $table->string('subject');
             $table->text('body');
-            $table->timestamp('sent_at')->nullable();
+            $table->timestamp('queued_at')->nullable();
             $table->integer('attempts')->nullable();
+            $table->timestamp('sent_at')->nullable();
 
             $table->foreignUuid('user_id');
 
