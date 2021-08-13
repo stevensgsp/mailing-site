@@ -30,5 +30,8 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@mailing.site',
             'is_admin' => true,
         ]);
+
+        // seed other users
+        User::factory()->count(20)->for(City::get()->random())->create();
     }
 }

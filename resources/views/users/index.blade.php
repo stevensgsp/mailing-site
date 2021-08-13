@@ -29,7 +29,7 @@
                         <tbody>
                             @foreach($users as $index => $user)
                                 <tr>
-                                    <th scope="row">{{ $index + 1 }}</th>
+                                    <th scope="row">{{ $index + 1 + ($users->perPage() * ($users->currentPage() - 1)) }}</th>
                                     <td>{{ $user->name }}</td>
                                     <td>{{ $user->email }}</td>
                                     <td>{{ $user->phone_number }}</td>
@@ -90,6 +90,8 @@
                             @endif
                         </tbody>
                     </table>
+
+                    {{ $users->links() }}
                 </div>
             </div>
         </div>
