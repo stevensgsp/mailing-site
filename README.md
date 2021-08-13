@@ -48,6 +48,11 @@ Run migrations and seeders
 php artisan migrate --seed
 ```
 
+### Test credentials
+
+email: admin@mailing.site
+password: 12345678
+
 ## Artisan command
 The ```queue:mails``` artisan command will queue all email messages that are not. The ```--user``` option is optional:
 
