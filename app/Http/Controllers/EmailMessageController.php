@@ -18,9 +18,19 @@ class EmailMessageController extends Controller
     public function index()
     {
         // get email messages
-        $emailMessages = EmailMessage::all();
+        $emailMessages = auth()->user()->emailMessages()->orderByDesc('created_at')->get();
 
-        return EmailMessageResource::collection($emailMessages);
+        return view('emailMessages.index', compact('emailMessages'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        return view('emailMessages.create');
     }
 
     /**
@@ -40,7 +50,7 @@ class EmailMessageController extends Controller
         // create email message
         $emailMessage = $user->emailMessages()->create($input);
 
-        return new EmailMessageResource($emailMessage);
+        return redirect()->route('emailMessages.index')->with('success', 'Email stored!');
     }
 
     /**
@@ -54,31 +64,9 @@ class EmailMessageController extends Controller
         // get email message
         $emailMessage = EmailMessage::findOrFail($id);
 
-        # TODO: verificar que usuario logueado es el que ha realizado el email
+        // abort if the user is not who created the email message
+        abort_if(! $emailMessage->wasCreatedBy(auth()->user()), 401);
 
-        return new EmailMessageResource($emailMessage);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        return view('emailMessages.show', compact('emailMessage'));
     }
 }
